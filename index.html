@@ -133,15 +133,21 @@
             </div>
 
             <div class="glass rounded-3xl p-6 shadow-2xl">
-                <div class="flex justify-between items-center mb-6">
+                <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-3 mb-6">
                     <div>
                         <h3 class="text-base font-bold text-gray-200">Visualisasi Data Real-Time</h3>
                         <p class="text-xs text-gray-400">Grafik otomatis sinkronisasi Realtime Database</p>
                     </div>
-                    <button onclick="exportToCSV()" class="text-xs bg-gray-800 hover:bg-gray-700 text-gray-300 px-3 py-2 rounded-xl border border-gray-700 flex items-center space-x-1.5 transition-all cursor-pointer">
-                        <i class="fa-solid fa-file-csv text-teal-400"></i>
-                        <span>Export CSV</span>
-                    </button>
+                    <div class="flex items-center space-x-2">
+                        <button onclick="exportToCSV()" class="text-xs bg-gray-800 hover:bg-gray-700 text-gray-300 px-3 py-2 rounded-xl border border-gray-700 flex items-center space-x-1.5 transition-all cursor-pointer">
+                            <i class="fa-solid fa-file-csv text-teal-400"></i>
+                            <span>Export CSV</span>
+                        </button>
+                        <button id="btnResetDB" class="text-xs bg-red-950/40 hover:bg-red-900/60 text-red-300 px-3 py-2 rounded-xl border border-red-900/50 flex items-center space-x-1.5 transition-all cursor-pointer">
+                            <i class="fa-solid fa-trash-can text-red-400"></i>
+                            <span>Reset Pool Data</span>
+                        </button>
+                    </div>
                 </div>
 
                 <div class="relative h-64 flex justify-center items-center">
@@ -178,12 +184,14 @@
     </main>
 
     <footer class="w-full max-w-6xl mx-auto px-4 pb-6 mt-8">
-        &copy; 2026 Panitia Rasulan Tri Dusun &bull; Desa Siraman. Firebase Realtime Database Engine.
+        <div class="text-center text-xs text-gray-500 border-t border-gray-800/60 pt-4">
+            &copy; 2026 Panitia Rasulan Tri Dusun &bull; Desa Siraman. Firebase Realtime Database Engine.
+        </div>
     </footer>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+        import { getDatabase, ref, push, onValue, set } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
         // Konfigurasi Asli Milik Anda
         const firebaseConfig = {
@@ -213,6 +221,7 @@
         const tableBody = document.getElementById('tableBody');
         const emptyRow = document.getElementById('emptyRow');
         const alreadyVotedAlert = document.getElementById('alreadyVotedAlert');
+        const btnResetDB = document.getElementById('btnResetDB');
 
         // Handle Input Tambahan 'Lainnya'
         document.querySelectorAll('input[name="pollOption"]').forEach((radio) => {
@@ -230,9 +239,12 @@
         });
 
         function checkVoteStatus() {
-            if (hasVoted) {
+            if (hasVoted === 'true' || hasVoted === true) {
                 pollForm.classList.add('hidden');
                 alreadyVotedAlert.classList.remove('hidden');
+            } else {
+                pollForm.classList.remove('hidden');
+                alreadyVotedAlert.classList.add('hidden');
             }
         }
 
@@ -302,6 +314,7 @@
                     tableBody.appendChild(tr);
                 });
             } else {
+                tableBody.querySelectorAll('tr:not(#emptyRow)').forEach(tr => tr.remove());
                 emptyRow.classList.remove('hidden');
                 emptyRow.innerHTML = `<td colspan="4" class="px-4 py-8 text-center text-xs text-gray-500 italic">Belum ada data respons masuk.</td>`;
             }
@@ -349,6 +362,35 @@
                 });
             }
             updateDashboard();
+        });
+
+        // ACTION RESET DATA DENGAN COCOK PIN 170795
+        btnResetDB.addEventListener('click', async () => {
+            const inputPIN = prompt("Masukkan PIN Otorisasi untuk mereset seluruh database:");
+            
+            if (inputPIN === null) return; // Jika klik cancel
+
+            if (inputPIN === "170795") {
+                const yakin = confirm("⚠️ PERINGATAN! Tindakan ini akan menghapus semua respons warga secara permanen dari server cloud. Anda yakin?");
+                if (yakin) {
+                    try {
+                        // Mengosongkan folder polling_siraman di Firebase
+                        await set(dbRef, null);
+                        
+                        // Menghapus tanda lock browser agar semua device bisa vote ulang
+                        localStorage.removeItem('siraman_has_voted');
+                        hasVoted = false;
+                        
+                        checkVoteStatus();
+                        alert("Database sukses dikosongkan! Seluruh warga kini dapat mengirimkan hak suara baru.");
+                    } catch (error) {
+                        console.error("Gagal melakukan reset:", error);
+                        alert("Gagal mereset database. Cek konfigurasi rules Firebase Anda.");
+                    }
+                }
+            } else {
+                alert("❌ PIN Salah! Akses ditolak.");
+            }
         });
 
         // Export CSV
