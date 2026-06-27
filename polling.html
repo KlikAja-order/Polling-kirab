@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Polling Partisipasi Kirab Rasulan Tri Dusun</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #0b0f19;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(30, 58, 138, 0.2) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(17, 94, 89, 0.2) 0px, transparent 50%);
+        }
+        .glass {
+            background: rgba(17, 24, 39, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+    </style>
+</head>
+<body class="text-gray-100 min-h-screen flex flex-col justify-between antialiased">
+
+    <!-- Header / Navbar -->
+    <header class="w-full max-w-6xl mx-auto px-4 pt-6">
+        <div class="glass rounded-2xl px-6 py-4 flex justify-between items-center shadow-2xl">
+            <div class="flex items-center space-x-3">
+                <div class="bg-gradient-to-tr from-blue-500 to-teal-400 p-2.5 rounded-xl shadow-lg shadow-blue-500/20">
+                    <i class="fa-solid fa-square-poll-horizontal text-xl text-white"></i>
+                </div>
+                <div>
+                    <span class="text-xs font-semibold uppercase tracking-wider text-teal-400 block">E-Polling</span>
+                    <h1 class="text-sm font-bold text-gray-200">Desa Siraman</h1>
+                </div>
+            </div>
+            <div class="text-xs text-gray-400 flex items-center bg-gray-800/50 px-3 py-1.5 rounded-lg border border-gray-700/50">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse mr-2"></span> Live System
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="w-full max-w-6xl mx-auto px-4 py-8 flex-grow grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        
+        <!-- Left Side: Form Polling -->
+        <section class="lg:col-span-5 space-y-6">
+            <div class="glass rounded-3xl p-6 lg:p-8 shadow-2xl relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-3xl -mr-10 -mt-10"></div>
+                
+                <span class="text-xs font-bold text-blue-400 uppercase tracking-widest bg-blue-500/10 px-3 py-1 rounded-full">Kuesioner Warga</span>
+                <h2 class="text-xl lg:text-2xl font-bold mt-4 leading-snug">Apakah temen-temen setuju atau bersedia mengikuti Kirab Rasulan Tri Dusun Desa Siraman?</h2>
+                <p class="text-sm text-gray-400 mt-2">Suara Anda sangat menentukan kelancaran dan kemeriahan acara adat kita bersama.</p>
+
+                <!-- Form -->
+                <form id="pollForm" class="mt-8 space-y-4">
+                    <!-- Input Nama -->
+                    <div class="space-y-1.5">
+                        <label for="voterName" class="text-xs font-semibold text-gray-300">Nama Lengkap / Identitas</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-gray-500">
+                                <i class="fa-regular fa-user"></i>
+                            </span>
+                            <input type="text" id="voterName" required placeholder="Masukkan nama Anda..." 
+                                class="w-full bg-gray-900/60 border border-gray-700/60 rounded-xl py-3 pl-11 pr-4 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all">
+                        </div>
+                    </div>
+
+                    <!-- Pilihan Opsi -->
+                    <div class="space-y-3 pt-2">
+                        <label class="text-xs font-semibold text-gray-300">Pilih Salah Satu Jawaban :</label>
+                        
+                        <!-- Opsi 1 -->
+                        <label class="flex items-center p-4 bg-gray-900/40 border border-gray-700/50 rounded-xl cursor-pointer hover:bg-gray-800/40 hover:border-gray-600 transition-all group">
+                            <input type="radio" name="pollOption" value="Bersedia" required class="w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 focus:ring-blue-500 focus:ring-offset-gray-900">
+                            <div class="ml-4">
+                                <span class="block text-sm font-semibold text-gray-200 group-hover:text-white">1. Bersedia</span>
+                                <span class="text-xs text-gray-400">Siap berpartisipasi aktif dalam seluruh rangkaian kirab.</span>
+                            </div>
+                        </label>
+
+                        <!-- Opsi 2 -->
+                        <label class="flex items-center p-4 bg-gray-900/40 border border-gray-700/50 rounded-xl cursor-pointer hover:bg-gray-800/40 hover:border-gray-600 transition-all group">
+                            <input type="radio" name="pollOption" value="Tidak Bersedia" class="w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 focus:ring-blue-500 focus:ring-offset-gray-900">
+                            <div class="ml-4">
+                                <span class="block text-sm font-semibold text-gray-200 group-hover:text-white">2. Tidak Bersedia</span>
+                                <span class="text-xs text-gray-400">Berhalangan hadir atau tidak bisa mengikuti kegiatan kirab.</span>
+                            </div>
+                        </label>
+
+                        <!-- Opsi 3 -->
+                        <label id="opsiLainnyaContainer" class="flex flex-col p-4 bg-gray-900/40 border border-gray-700/50 rounded-xl cursor-pointer hover:bg-gray-800/40 hover:border-gray-600 transition-all group">
+                            <div class="flex items-center w-full">
+                                <input type="radio" name="pollOption" id="radioLainnya" value="Lainnya" class="w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 focus:ring-blue-500 focus:ring-offset-gray-900">
+                                <div class="ml-4">
+                                    <span class="block text-sm font-semibold text-gray-200 group-hover:text-white">3. Lainnya</span>
+                                    <span class="text-xs text-gray-400">Punya alasan tersendiri, bersyarat, atau usulan lain.</span>
+                                </div>
+                            </div>
+                            <!-- Input Detail Lainnya (Hidden secara default) -->
+                            <div id="inputLainnyaWrapper" class="mt-3 hidden w-full">
+                                <input type="text" id="textLainnya" placeholder="Tuliskan alasan / keterangan Anda..." 
+                                    class="w-full bg-gray-900 border border-gray-700 rounded-lg py-2 px-3 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-teal-500 transition-all">
+                            </div>
+                        </label>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" id="btnSubmit" class="w-full mt-4 bg-gradient-to-r from-blue-600 to-teal-500 hover:from-blue-500 hover:to-teal-400 text-white font-semibold text-sm py-3 px-4 rounded-xl shadow-lg shadow-blue-600/20 transition-all flex justify-center items-center space-x-2 cursor-pointer">
+                        <i class="fa-regular fa-paper-plane"></i>
+                        <span>Kirim Respons Anda</span>
+                    </button>
+                </form>
+
+                <!-- Info Alert Jika Sudah Vote -->
+                <div id="alreadyVotedAlert" class="mt-6 hidden bg-emerald-500/10 border border-emerald-500/30 rounded-xl p-4 text-center">
+                    <i class="fa-solid fa-circle-check text-emerald-400 text-2xl mb-2"></i>
+                    <p class="text-sm font-semibold text-emerald-300">Terima Kasih!</p>
+                    <p class="text-xs text-gray-400 mt-1">Perangkat Anda telah berhasil mengirimkan hak suara.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Right Side: Hasil & Statistik Real-Time -->
+        <section class="lg:col-span-7 space-y-6">
+            <!-- Ringkasan Angka / Kpi Cards -->
+            <div class="grid grid-cols-3 gap-4">
+                <div class="glass rounded-2xl p-4 text-center">
+                    <span class="text-xs text-gray-400 block mb-1">Total Suara</span>
+                    <span id="statTotal" class="text-2xl font-bold text-white">0</span>
+                </div>
+                <div class="glass rounded-2xl p-4 text-center border-l-2 border-l-blue-500">
+                    <span class="text-xs text-blue-400 block mb-1">Bersedia</span>
+                    <span id="statBersedia" class="text-2xl font-bold text-blue-400">0</span>
+                </div>
+                <div class="glass rounded-2xl p-4 text-center border-l-2 border-l-rose-500">
+                    <span class="text-xs text-rose-400 block mb-1">Tidak Bersedia</span>
+                    <span id="statTidak" class="text-2xl font-bold text-rose-400">0</span>
+                </div>
+            </div>
+
+            <!-- Visualisasi Grafik -->
+            <div class="glass rounded-3xl p-6 shadow-2xl">
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <h3 class="text-base font-bold text-gray-200">Visualisasi Data Real-Time</h3>
+                        <p class="text-xs text-gray-400">Grafik persentase pilihan responden</p>
+                    </div>
+                    <button onclick="exportToCSV()" class="text-xs bg-gray-800 hover:bg-gray-700 text-gray-300 px-3 py-2 rounded-xl border border-gray-700 flex items-center space-x-1.5 transition-all cursor-pointer">
+                        <i class="fa-solid fa-file-csv text-teal-400"></i>
+                        <span>Export CSV</span>
+                    </button>
+                </div>
+
+                <!-- Canvas Chart.js -->
+                <div class="relative h-64 flex justify-center items-center">
+                    <canvas id="chartPolling"></canvas>
+                </div>
+            </div>
+
+            <!-- Tabel Detail Responden -->
+            <div class="glass rounded-3xl p-6 shadow-2xl">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-base font-bold text-gray-200">Daftar Lengkap Responden</h3>
+                    <span id="badgeCount" class="text-xs bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2.5 py-0.5 rounded-full font-medium">0 Data</span>
+                </div>
+
+                <div class="overflow-x-auto rounded-xl border border-gray-800/80 max-h-60 overflow-y-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-gray-900/80 text-xs font-semibold text-gray-400 uppercase tracking-wider sticky top-0 backdrop-blur-md">
+                                <th class="px-4 py-3">No</th>
+                                <th class="px-4 py-3">Nama Lengkap</th>
+                                <th class="px-4 py-3">Pilihan</th>
+                                <th class="px-4 py-3">Keterangan Lainnya</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody" class="divide-y divide-gray-800/60 text-sm text-gray-300">
+                            <!-- Data looping via JS -->
+                            <tr id="emptyRow">
+                                <td colspan="4" class="px-4 py-8 text-center text-xs text-gray-500 italic">Belum ada data respons masuk.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="w-full max-w-6xl mx-auto px-4 pb-6 mt-8">
+        <div class="text-center text-xs text-gray-500 border-t border-gray-800/60 pt-4">
+            &copy; 2026 Panitia Rasulan Tri Dusun &bull; Desa Siraman. All Rights Reserved.
+        </div>
+    </footer>
+
+    <!-- LOGIC SCRIPT -->
+    <script>
+        // Array Data Penampung (Menggunakan LocalStorage agar data awet saat di-refresh)
+        let dataPolling = JSON.parse(localStorage.getItem('siraman_poll_data')) || [];
+        let hasVoted = localStorage.getItem('siraman_has_voted') || false;
+        let pollChart;
+
+        // DOM Elements
+        const pollForm = document.getElementById('pollForm');
+        const radioLainnya = document.getElementById('radioLainnya');
+        const inputLainnyaWrapper = document.getElementById('inputLainnyaWrapper');
+        const textLainnya = document.getElementById('textLainnya');
+        const tableBody = document.getElementById('tableBody');
+        const emptyRow = document.getElementById('emptyRow');
+        const btnSubmit = document.getElementById('btnSubmit');
+        const alreadyVotedAlert = document.getElementById('alreadyVotedAlert');
+
+        // Handle Tampilan Input Tambahan untuk Opsi 'Lainnya'
+        document.querySelectorAll('input[name="pollOption"]').forEach((radio) => {
+            radio.addEventListener('change', (e) => {
+                if (e.target.value === 'Lainnya') {
+                    inputLainnyaWrapper.classList.remove('hidden');
+                    textLainnya.setAttribute('required', 'required');
+                    textLainnya.focus();
+                } else {
+                    inputLainnyaWrapper.classList.add('hidden');
+                    textLainnya.removeAttribute('required');
+                    textLainnya.value = '';
+                }
+            });
+        });
+
+        // Cek Status Apakah User Ini Sudah Pernah Vote Sebelumnya
+        function checkVoteStatus() {
+            if (hasVoted) {
+                pollForm.classList.add('hidden');
+                alreadyVotedAlert.classList.remove('hidden');
+            }
+        }
+
+        // Inisialisasi Chart.js
+        function initChart() {
+            const ctx = document.getElementById('chartPolling').getContext('2d');
+            
+            // Hitung kalkulasi awal
+            const counts = getCounts();
+
+            pollChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Bersedia', 'Tidak Bersedia', 'Lainnya'],
+                    datasets: [{
+                        data: [counts.bersedia, counts.tidak, counts.lainnya],
+                        backgroundColor: [
+                            'rgba(37, 99, 235, 0.85)',  // Blue
+                            'rgba(225, 29, 72, 0.85)',   // Rose
+                            'rgba(20, 184, 166, 0.85)'   // Teal
+                        ],
+                        borderColor: [
+                            '#1e3a8a',
+                            '#4c0519',
+                            '#042f2e'
+                        ],
+                        borderWidth: 1,
+                        hoverOffset: 10
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#9ca3af',
+                                font: { family: 'Plus Jakarta Sans', size: 12 },
+                                padding: 20
+                            }
+                        }
+                    },
+                    cutout: '70%'
+                }
+            });
+        }
+
+        // Helper hitung jumlah suara per opsi
+        function getCounts() {
+            let bersedia = 0, tidak = 0, lainnya = 0;
+            dataPolling.forEach(item => {
+                if (item.pilihan === 'Bersedia') bersedia++;
+                else if (item.pilihan === 'Tidak Bersedia') tidak++;
+                else lainnya++;
+            });
+            return { bersedia, tidak, lainnya, total: dataPolling.length };
+        }
+
+        // Update Tampilan Dashboard UI (Tabel, Angka Ringkasan, & Chart)
+        function updateDashboard() {
+            const counts = getCounts();
+
+            // Update Angka Ringkasan
+            document.getElementById('statTotal').innerText = counts.total;
+            document.getElementById('statBersedia').innerText = counts.bersedia;
+            document.getElementById('statTidak').innerText = counts.tidak;
+            document.getElementById('badgeCount').innerText = `${counts.total} Data`;
+
+            // Update Chart Data
+            if (pollChart) {
+                pollChart.data.datasets[0].data = [counts.bersedia, counts.tidak, counts.lainnya];
+                pollChart.update();
+            }
+
+            // Render Ulang isi Tabel Responden
+            if (dataPolling.length > 0) {
+                emptyRow.classList.add('hidden');
+                // Bersihkan baris lama kecuali template emptyRow
+                tableBody.querySelectorAll('tr:not(#emptyRow)').forEach(tr => tr.remove());
+
+                // Loop dari data terbaru di atas
+                dataPolling.slice().reverse().forEach((item, index) => {
+                    const tr = document.createElement('tr');
+                    tr.className = "hover:bg-gray-800/30 transition-all";
+
+                    let badgeColor = "bg-blue-500/10 text-blue-400 border border-blue-500/20";
+                    if (item.pilihan === "Tidak Bersedia") badgeColor = "bg-rose-500/10 text-rose-400 border border-rose-500/20";
+                    if (item.pilihan === "Lainnya") badgeColor = "bg-teal-500/10 text-teal-400 border border-teal-500/20";
+
+                    tr.innerHTML = `
+                        <td class="px-4 py-3.5 text-xs text-gray-500">${dataPolling.length - index}</td>
+                        <td class="px-4 py-3.5 font-medium text-gray-200">${escapeHTML(item.nama)}</td>
+                        <td class="px-4 py-3.5">
+                            <span class="text-[11px] px-2.5 py-1 rounded-full font-semibold ${badgeColor}">
+                                ${item.pilihan}
+                            </span>
+                        </td>
+                        <td class="px-4 py-3.5 text-xs text-gray-400 max-w-xs truncate">${escapeHTML(item.keterangan || '-')}</td>
+                    `;
+                    tableBody.appendChild(tr);
+                });
+            } else {
+                emptyRow.classList.remove('hidden');
+            }
+        }
+
+        // Mencegah XSS injection di input teks
+        function escapeHTML(str) {
+            return str.replace(/[&<>'"]/g, 
+                tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+            );
+        }
+
+        // Aksi Submit Form Polling
+        pollForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const namaInput = document.getElementById('voterName').value.trim();
+            const pilihanRadio = document.querySelector('input[name="pollOption"]:checked').value;
+            let keteranganTambahan = "";
+
+            if (pilihanRadio === 'Lainnya') {
+                keteranganTambahan = textLainnya.value.trim();
+            }
+
+            // Struktur Objek Data Baru
+            const dataBaru = {
+                id: Date.now(),
+                nama: namaInput,
+                pilihan: pilihanRadio === 'Lainnya' ? 'Lainnya' : pilihanRadio,
+                keterangan: keteranganTambahan
+            };
+
+            // Simpan ke array & LocalStorage
+            dataPolling.push(dataBaru);
+            localStorage.setItem('siraman_poll_data', JSON.stringify(dataPolling));
+
+            // Kunci browser device ini agar tidak vote berkali-kali
+            localStorage.setItem('siraman_has_voted', 'true');
+            hasVoted = true;
+
+            // Reset form dan update UI
+            pollForm.reset();
+            inputLainnyaWrapper.classList.add('hidden');
+            checkVoteStatus();
+            updateDashboard();
+        });
+
+        // Fitur Export Data ke file CSV agar bisa dibuka di Microsoft Excel
+        function exportToCSV() {
+            if (dataPolling.length === 0) {
+                alert('Belum ada data respons yang bisa diexport.');
+                return;
+            }
+
+            let csvContent = "data:text/csv;charset=utf-8,";
+            csvContent += "No,Nama Responden,Pilihan Jawaban,Keterangan Tambahan\n";
+
+            dataPolling.forEach((item, index) => {
+                let row = `${index + 1},"${item.nama.replace(/"/g, '""')}","${item.pilihan}","${(item.keterangan || '-').replace(/"/g, '""')}"`;
+                csvContent += row + "\n";
+            });
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "Hasil_Polling_Kirab_Siraman.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // Jalankan Fungsi Saat Halaman Load Pertama Kali
+        window.onload = function() {
+            checkVoteStatus();
+            initChart();
+            updateDashboard();
+        };
+    </script>
+</body>
+</html>
